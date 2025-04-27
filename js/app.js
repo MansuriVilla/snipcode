@@ -416,3 +416,25 @@ document.addEventListener("DOMContentLoaded", () => {
       scrub: !0,
     },
   });
+
+
+document.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+  });
+  
+  
+  const blockedKeys = ["i", "j", "c", "k", "m", "s", "t", "u", "v", "w", "x", "y", "z"];
+  
+  
+  document.addEventListener("keydown", (e) => {
+    const key = e.key.toLowerCase(); 
+    if (
+      e.key === "F12" ||                     
+      (e.ctrlKey && key === "u") ||         
+      (e.ctrlKey && key === "s") ||         
+      (e.ctrlKey && e.shiftKey && blockedKeys.includes(key)) || 
+      (e.metaKey && e.altKey && blockedKeys.includes(key)) 
+    ) {
+      e.preventDefault();
+    }
+  });
