@@ -299,49 +299,73 @@ lenis.on("scroll", ScrollTrigger.update),
   document.addEventListener("DOMContentLoaded", () => {
     const e = document.getElementById("customCursor");
     if (!e) return;
-    let t = 0, n = 0, o = 0, r = 0;
-  
-    const a = () => {
-      o += 0.2 * (t - o); // Smooth lerp for x
-      r += 0.2 * (n - r); // Smooth lerp for y
-      e.style.transform = `translate3d(${o - 40}px, ${r - 40}px, 0)`; // Use translate3d
-      requestAnimationFrame(a);
+
+    let targetX = 0,
+      targetY = 0;
+
+    let currentX = 0,
+      currentY = 0;
+
+    let vx = 0,
+      vy = 0;
+
+    const k = 0.2;
+    const damping = 0.75;
+    const mass = 1;
+
+    const update = () => {
+      const dx = targetX - currentX;
+      const dy = targetY - currentY;
+      const ax = (k * dx - damping * vx) / mass;
+      const ay = (k * dy - damping * vy) / mass;
+
+      vx += ax;
+      vy += ay;
+
+      currentX += vx;
+      currentY += vy;
+
+      e.style.transform = `translate3d(${currentX - 40}px, ${
+        currentY - 40
+      }px, 0)`;
+
+      requestAnimationFrame(update);
     };
-  
+
     document.addEventListener(
       "mousemove",
-      (e) => {
-        t = e.clientX;
-        n = e.clientY;
+      (event) => {
+        targetX = event.clientX;
+        targetY = event.clientY;
       },
       { passive: true }
     );
-  
-    a();
-  
-    document.querySelectorAll(".project_content-item").forEach((t) => {
-      t.addEventListener("mouseenter", () => {
+
+    update();
+
+    document.querySelectorAll(".project_content-item").forEach((item) => {
+      item.addEventListener("mouseenter", () => {
         e.classList.add("hovering");
       });
-      t.addEventListener("mouseleave", () => {
+      item.addEventListener("mouseleave", () => {
         e.classList.remove("hovering");
       });
     });
   });
-  document.addEventListener("DOMContentLoaded", () => {
-    if (!window.ColorThief) return;
-    const e = new ColorThief();
-    document.querySelectorAll(".skills_icon").forEach((t) => {
-      const n = t.querySelector(".skill"),
-        o = t.querySelector(".skills__Label");
-      (n.crossOrigin = "Anonymous"),
-        n.complete
-          ? applyColors(n, o, e)
-          : n.addEventListener("load", () => applyColors(n, o, e), {
-              once: !0,
-            });
-    });
-  }),
+document.addEventListener("DOMContentLoaded", () => {
+  if (!window.ColorThief) return;
+  const e = new ColorThief();
+  document.querySelectorAll(".skills_icon").forEach((t) => {
+    const n = t.querySelector(".skill"),
+      o = t.querySelector(".skills__Label");
+    (n.crossOrigin = "Anonymous"),
+      n.complete
+        ? applyColors(n, o, e)
+        : n.addEventListener("load", () => applyColors(n, o, e), {
+            once: !0,
+          });
+  });
+}),
   document.addEventListener("DOMContentLoaded", offcanvasMenu),
   particlesMainFn(),
   gsap.registerPlugin(ScrollTrigger),
