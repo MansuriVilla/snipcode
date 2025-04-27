@@ -1,0 +1,65 @@
+* { margin: 0px; padding: 0px; box-sizing: border-box; scroll-behavior: smooth; }
+html,body { background-color: #000; color: #fff; font-family: 'Nexa-ExtraLight', sans-serif; touch-action: none; }
+html.lenis,html.lenis body { height:auto }
+.lenis.lenis-smooth { scroll-behavior:auto!important }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior:contain; }
+.lenis.lenis-stopped { overflow:clip }
+.lenis.lenis-smooth iframe { pointer-events:none }
+.lenis-enabled {
+  contain: strict;
+}
+.particles-js-canvas-el { position: absolute; top: 0; left:0; }
+input { background: transparent; border-bottom:1px solid #000; border-top: 0; border-right: 0; border-left: 0; outline:none; width:100%; }
+input[type="number"] { -moz-appearance: textfield; }
+/* Remove autofill background color and styles when autofilled and selected */
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill:focus { background-color: transparent !important; box-shadow: none !important; color: inherit !important; -webkit-box-shadow: 0 0 0px 1000px white inset !important; -webkit-text-fill-color: inherit !important; }
+input:-internal-autofill-selected { background-color: transparent !important; }
+/* Firefox specific (no need for :focus in Firefox, but you can set a similar style) */
+input:-moz-placeholder,
+textarea:-moz-placeholder { background-color: transparent !important; color: inherit !important; }
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+textarea { resize: none; border: none; }
+button { background:transparent; border:0px; outline:none; font-family: 'Nexa-ExtraLight', sans-serif; }
+ul { padding: 0px; margin: 0px; }
+ul li { list-style: none; }
+a { text-decoration: none; }
+h1 { font-size: clamp(48px, 8vw , 92px); font-family: 'Nexa-Heavy', sans-serif; line-height: 100%; }
+h2 { font-size: clamp(32px, 6vw, 56px); text-transform: uppercase; font-family: 'Nexa-Heavy', sans-serif; line-height: 100%; }
+h3 { font-size: clamp(22px, 3vw, 26px); font-family: 'Nexa-Heavy', sans-serif; line-height: 100%; }
+h4 { font-size: clamp(18px, 2.8vw, 24px); font-family: 'Nexa-Heavy', sans-serif; line-height: 100%; }
+p { font-size: clamp(14px, 2vw, 20px); }
+[class*="--outline"]:not([class*="--outline_"]) { border-radius: 50px; border: 1px solid #fff; }
+[class*="--outline__000"]:not([class*="--outline_fff"]) { border-radius: 50px; border: 1px solid #000; }
+.site_content-container { max-width: 1500px; margin: 0 auto; width: 100%; padding: 0 clamp(30px, 4vw, 50px); display: flex; gap: clamp(70px, 10vw, 150px); flex-direction: column; }
+.has__heighlight--clr { background: radial-gradient(circle at 0% 0%, aqua 20% ,blue 100% , #ffffff 0%); background-clip: text; color: transparent; -webkit-text-fill-color: transparent; -webkit-background-clip: text; }
+section :first-child { scroll-margin-top: 40px; }
+section:not(:first-child) { scroll-margin-top: 115px; }
+.site_bg--clr_fff { background:#fff; }
+img { width:100%; height:auto; }
+.site_form--container { display: flex; column-gap: 25px; row-gap:60px; flex-wrap: wrap; max-width: 920px; width: 100%; }
+.site-input_holder { position: relative; flex: 40%; }
+.site_input--label { position: absolute; top: 50%; left: 10px; transform: translateY(-50%); font-size: clamp(16px, 2vw, 20px); color: #000; transition: all 0.3s ease; pointer-events: none; }
+.site_input--textarea + .site_input--label { top: 13%; }
+.site_input { font-family: 'Nexa-ExtraLight', sans-serif; width: 100%; padding: 12px 10px; border-bottom: 1px solid #000; font-size: clamp(16px, 2vw, 20px); background-color: #fff; outline: none; transition: border-color 0.3s ease; border-radius: inherit; }
+.site_input:focus { border-color: #007BFF; }
+.site_input:focus + .site_input--label, .site_input:not(:placeholder-shown) + .site_input--label { top: -10px; font-size: clamp(14px, 1.2vw, 16px); color: #000; }
+.site_input::placeholder { opacity: 0; transition: opacity 0.3s ease; }
+.site_input:focus::placeholder { opacity: 1; }
+.has_full--flex { flex:100%; }
+.site_btn { border-radius:50px; color:#fff; cursor:pointer; transition: .25s linear all; text-transform: uppercase; font-size:clamp(14px, 1.2vw, 20px); background:#000; border: 1px solid transparent; padding: clamp(8px, 5vw + 5px, 13px) clamp(20px, 8vw + 20px, 50px); }
+.site_btn:hover { border-radius:50px; color:#000; background:#fff; border:1px solid #000; }
+.site_selection--area { display:flex; flex-wrap:wrap; row-gap: 20px; column-gap: 25px; align-items: center; }
+.selection_btn { padding: 13px 34px; font-size:clamp(12px, 1.2vw, 16px); cursor: pointer; -webkit-text-stroke: 0.9px #000; }
+.has_radio--hidden input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+.has_radio--hidden input[type="radio"]:checked + label { transition:.25s linear all; background-color: #000; color: #fff; border-color: #000; -webkit-text-stroke: 0.9px #fff; }
+.selection_area-btn.has_radio--hidden { display: flex; user-select:none; }
+.is_magnatic--effect { transform: scale(1.1); transition: transform 0.2s linear; }
+#Home .site_cta--outline { position:relative; z-index:2; }
+.has_magnatic--effect { transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1); will-change: transform; }
+.error-popup { display: none; /* Hidden by default */
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  justify-content: center; align-items: center; z-index: 1000; /* Ensure it's on top of everything */ }
+.error-popup-content { background-color: white; padding: 20px; border-radius: 5px; text-align: center; }
+.close-popup-btn { background-color: #ff4c4c; border: none; color: white; padding: 10px; cursor: pointer; border-radius: 5px; margin-top: 10px; }
+.close-popup-btn:hover { background-color: #ff1a1a; }
