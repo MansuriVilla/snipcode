@@ -99,5 +99,5 @@ span.has-splitting-line { display: inline-block; }
 .projectAnchored__item { display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 29px; color: #fff; transition: 0.2s all linear; }
 .projectAnchored__item:hover .project_img { scale: 1.1; }
 .has_scroll--speed__element { will-change: transform; backface-visibility: hidden; transform: translateZ(0); }
-#customCursor { position: fixed; width: 0px; height: 0px; border-radius: 50%; background-color: #000; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); pointer-events: none; z-index: 1000; transition: all 0.1s linear; will-change: transform; display: flex; justify-content: center; align-items: center; color: #fff; overflow: hidden; }
+#customCursor { position: fixed; width: 0px; height: 0px; border-radius: 50%; background-color: #000; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); pointer-events: none; z-index: 1000; transition: all 0.1s linear; will-change: transform; display: flex; justify-content: center; align-items: center; color: #fff; overflow: hidden; transform-origin: center center;}
 #customCursor.hovering { width: 80px; height: 80px; }
