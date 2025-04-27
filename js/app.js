@@ -226,7 +226,7 @@ window.onload = function () {
         trigger: box,
         start: '0% 78%',
         end: '100% 78%',
-        markers: false,
+        
         scrub: true
       }
     })
@@ -406,7 +406,7 @@ gsap.to("#projects", {
         start: "top 2%",
         end: "bottom 80%",
         scrub: true,
-        markers: false,
+        
        
     }
 });
