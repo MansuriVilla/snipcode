@@ -1,15 +1,17 @@
-const lenis = new Lenis({
-  duration: 1.2,
-  easing: (e) => 1 - Math.pow(1 - e, 3),
-  smooth: !0,
-  smoothTouch: !0,
-  direction: "vertical",
-  gestureDirection: "vertical",
-  wheelMultiplier: 1.2,
-  touchMultiplier: 2,
-  normalizeWheel: !0,
-  infinite: !1,
+// Initialize a new Lenis instance for smooth scrolling
+const lenis = new Lenis();
+
+// Synchronize Lenis scrolling with GSAP's ScrollTrigger plugin
+lenis.on("scroll", ScrollTrigger.update);
+
+// Add Lenis's requestAnimationFrame (raf) method to GSAP's ticker
+// This ensures Lenis's smooth scroll animation updates on each GSAP tick
+gsap.ticker.add((time) => {
+  lenis.raf(time * 1000); // Convert time from seconds to milliseconds
 });
+
+// Disable lag smoothing in GSAP to prevent any delay in scroll animations
+gsap.ticker.lagSmoothing(0);
 function rgbToHex(e, t, n) {
   return `#${((1 << 24) | (e << 16) | (t << 8) | n).toString(16).slice(1)}`;
 }
@@ -416,35 +418,35 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   });
 
-document.addEventListener("contextmenu", (e) => {
-  e.preventDefault();
-});
+// document.addEventListener("contextmenu", (e) => {
+//   e.preventDefault();
+// });
 
-const blockedKeys = [
-  "i",
-  "j",
-  "c",
-  "k",
-  "m",
-  "s",
-  "t",
-  "u",
-  "v",
-  "w",
-  "x",
-  "y",
-  "z",
-];
+// const blockedKeys = [
+//   "i",
+//   "j",
+//   "c",
+//   "k",
+//   "m",
+//   "s",
+//   "t",
+//   "u",
+//   "v",
+//   "w",
+//   "x",
+//   "y",
+//   "z",
+// ];
 
-document.addEventListener("keydown", (e) => {
-  const key = e.key.toLowerCase();
-  if (
-    e.key === "F12" ||
-    (e.ctrlKey && key === "u") ||
-    (e.ctrlKey && key === "s") ||
-    (e.ctrlKey && e.shiftKey && blockedKeys.includes(key)) ||
-    (e.metaKey && e.altKey && blockedKeys.includes(key))
-  ) {
-    e.preventDefault();
-  }
-});
+// document.addEventListener("keydown", (e) => {
+//   const key = e.key.toLowerCase();
+//   if (
+//     e.key === "F12" ||
+//     (e.ctrlKey && key === "u") ||
+//     (e.ctrlKey && key === "s") ||
+//     (e.ctrlKey && e.shiftKey && blockedKeys.includes(key)) ||
+//     (e.metaKey && e.altKey && blockedKeys.includes(key))
+//   ) {
+//     e.preventDefault();
+//   }
+// });
