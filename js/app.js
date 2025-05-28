@@ -10,21 +10,17 @@ const lenis = new Lenis({
   normalizeWheel: !0,
   infinite: !1,
 });
-
 function rgbToHex(e, t, n) {
   return `#${((1 << 24) | (e << 16) | (t << 8) | n).toString(16).slice(1)}`;
 }
-
 function getLuminance([e, t, n]) {
   return (0.299 * e + 0.587 * t + 0.114 * n) / 255;
 }
-
 function colorDifference([e, t, n], [o, r, a]) {
   return Math.sqrt(
     Math.pow(o - e, 2) + Math.pow(r - t, 2) + Math.pow(a - n, 2)
   );
 }
-
 function getBestTextColor(e, t) {
   let n = "#fff",
     o = 0;
@@ -36,7 +32,6 @@ function getBestTextColor(e, t) {
     n
   );
 }
-
 function applyColors(e, t, n) {
   if (0 === e.naturalWidth) return;
   const o = n.getColor(e),
@@ -45,7 +40,6 @@ function applyColors(e, t, n) {
   (t.style.backgroundColor = rgbToHex(...a)),
     (t.style.color = getBestTextColor(a, r));
 }
-
 function offcanvasMenu() {
   const e = {
       menuToggle: document.querySelector(".menu-toggle"),
@@ -78,32 +72,16 @@ function offcanvasMenu() {
         n(!1);
     });
 }
-
 function particlesMainFn() {
   if (!document.getElementById("Home") || !window.particlesJS) return;
   const e = window.innerWidth < 768 ? 40 : 80;
   particlesJS("Home", {
     particles: {
-      number: {
-        value: e,
-        density: {
-          enable: !0,
-          value_area: 800,
-        },
-      },
-      color: {
-        value: "#fff",
-      },
-      shape: {
-        type: "circle",
-      },
-      opacity: {
-        value: 0.5,
-      },
-      size: {
-        value: 3,
-        random: !0,
-      },
+      number: { value: e, density: { enable: !0, value_area: 800 } },
+      color: { value: "#fff" },
+      shape: { type: "circle" },
+      opacity: { value: 0.5 },
+      size: { value: 3, random: !0 },
       line_linked: {
         enable: !0,
         distance: 150,
@@ -123,32 +101,18 @@ function particlesMainFn() {
     interactivity: {
       detect_on: "body",
       events: {
-        onhover: {
-          enable: !0,
-          mode: "grab",
-        },
-        onclick: {
-          enable: !0,
-          mode: "push",
-        },
+        onhover: { enable: !0, mode: "grab" },
+        onclick: { enable: !0, mode: "push" },
         resize: !0,
       },
       modes: {
-        grab: {
-          distance: 140,
-          line_linked: {
-            opacity: 1,
-          },
-        },
-        push: {
-          particles_nb: 4,
-        },
+        grab: { distance: 140, line_linked: { opacity: 1 } },
+        push: { particles_nb: 4 },
       },
     },
     retina_detect: !0,
   });
 }
-
 function headerActiveEffect() {
   const e = document.querySelectorAll("section"),
     t = document.querySelectorAll(".has_active--effect"),
@@ -163,9 +127,7 @@ function headerActiveEffect() {
             n && n.classList.add("isActive"));
         });
       },
-      {
-        threshold: 0.25,
-      }
+      { threshold: 0.25 }
     );
   e.forEach((e) => n.observe(e)),
     t.forEach((e) => {
@@ -173,15 +135,12 @@ function headerActiveEffect() {
         const o = e.getAttribute("href");
         o.startsWith("#") &&
           (n.preventDefault(),
-          document.querySelector(o)?.scrollIntoView({
-            behavior: "smooth",
-          }),
+          document.querySelector(o)?.scrollIntoView({ behavior: "smooth" }),
           t.forEach((e) => e.classList.remove("isActive")),
           e.classList.add("isActive"));
       });
     });
 }
-
 function speedCtrl() {
   const e = document.querySelectorAll(".has_scroll--speed__section");
   let t = !1,
@@ -210,9 +169,7 @@ function speedCtrl() {
   window.addEventListener(
     "scroll",
     throttle(() => !t && ((t = !0), requestAnimationFrame(o)), 16),
-    {
-      passive: !0,
-    }
+    { passive: !0 }
   ),
     window.addEventListener(
       "resize",
@@ -221,7 +178,6 @@ function speedCtrl() {
       }, 100)
     );
 }
-
 function formValidationHandler() {
   const e = document.querySelector(".site_form--container");
   if (!e) return;
@@ -230,10 +186,7 @@ function formValidationHandler() {
       document.querySelectorAll(".error-msg").forEach((e) => e.remove());
     let o = !0;
     [
-      {
-        id: "name",
-        message: "Please enter your name.",
-      },
+      { id: "name", message: "Please enter your name." },
       {
         id: "phone",
         message: "Please enter a valid phone number.",
@@ -244,10 +197,7 @@ function formValidationHandler() {
         message: "Please enter a valid email address.",
         regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
       },
-      {
-        id: "company",
-        message: "Please enter a company name.",
-      },
+      { id: "company", message: "Please enter a company name." },
     ].forEach(({ id: e, message: n, regex: r }) => {
       const a = document.getElementById(e);
       (a && a.value.trim() && (!r || r.test(a.value.trim()))) ||
@@ -275,7 +225,6 @@ function formValidationHandler() {
     n = document.getElementById("phone");
   n?.addEventListener("input", () => (n.value = n.value.replace(/\D/g, "")));
 }
-
 function magneticEffect() {
   document.querySelectorAll(".has_magnatic--effect").forEach((e) => {
     const t = throttle((t) => {
@@ -285,16 +234,13 @@ function magneticEffect() {
       (e.style.transform = `translate(${o}px, ${r}px) scale(1.1)`),
         e.classList.add("is_magnatic--effect");
     }, 16);
-    e.addEventListener("mousemove", t, {
-      passive: !0,
-    }),
+    e.addEventListener("mousemove", t, { passive: !0 }),
       e.addEventListener("mouseleave", () => {
         (e.style.transform = "translate(0, 0) scale(1)"),
           e.classList.remove("is_magnatic--effect");
       });
   });
 }
-
 function velocitySlider() {
   document.querySelectorAll(".siteVelocity__slider").forEach((e) => {
     let t,
@@ -322,9 +268,7 @@ function velocitySlider() {
         (i = e.deltaY > 0 ? -1 : 1),
           (a = Math.min(a + 0.02 * Math.abs(e.deltaY), 12));
       }, 50),
-      {
-        passive: !0,
-      }
+      { passive: !0 }
     ),
       window.addEventListener(
         "resize",
@@ -336,7 +280,6 @@ function velocitySlider() {
       c();
   });
 }
-
 function throttle(e, t) {
   let n = 0;
   return (...o) => {
@@ -344,7 +287,6 @@ function throttle(e, t) {
     r - n >= t && (e(...o), (n = r));
   };
 }
-
 function debounce(e, t) {
   let n;
   return (...o) => {
@@ -394,9 +336,7 @@ document.addEventListener("DOMContentLoaded", () => {
       targetX = event.clientX;
       targetY = event.clientY;
     },
-    {
-      passive: true,
-    }
+    { passive: true }
   );
 
   update();
