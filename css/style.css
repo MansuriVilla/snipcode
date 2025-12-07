@@ -23,9 +23,8 @@
 .header_nav--dark .has_active--effect::after { background-color: #000; }
 .header .menu-toggle,
 .off-canvas-menu { display: none; }
-.off-canvas-menu ul { padding-top: 40px; margin: 0; padding-left: 0; padding-right: 0; padding-bottom: 0; list-style: none; flex-grow: 1; text-align: center; }
-.off-canvas-menu ul li { padding: 15px; transform: translateY(20%); visibility: hidden; opacity: 0; transition: 0.5s linear all; transition-delay: 10ms; }
-.off-canvas-menu.active ul li { transform: translateY(0%); visibility: visible; opacity: 1; }
+.off-canvas-menu ul { padding-top: 70px; margin: 0; padding-left: 0; padding-right: 0; padding-bottom: 0; list-style: none; flex-grow: 1; text-align: center; }
+.off-canvas-menu ul li { padding: 0 25px 10px; }
 .off-canvas-menu .cta_main { padding: 15px; background-color: #444; }
 .off-canvas-menu .cta { color: white; text-decoration: none; font-weight: bold; }
 .off-canvas-menu.active { transform: translateY(0%); }

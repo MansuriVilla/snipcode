@@ -155,8 +155,44 @@ function initOffCanvasMenu() {
     headerNav: document.querySelector(".header_navigations_links"),
   };
 
-  // Check if all required elements exist
   if (!elements.menuToggle || !elements.offCanvasMenu) return;
+
+  // Initialize GSAP Timeline
+  let menuTimeline = null;
+
+  const createMenuTimeline = () => {
+    // Kill existing timeline if any to prevent conflicts
+    if (menuTimeline) menuTimeline.kill();
+
+    menuTimeline = gsap.timeline({ paused: true });
+
+    // Initial state set by CSS (translateX: 100%) for menu
+    // We need to target the actual list items for stagger effect
+    const menuItems = elements.offCanvasMenu.querySelectorAll("li");
+
+    // Set initial state for items (hidden and slightly down)
+    gsap.set(menuItems, { y: 20, autoAlpha: 0 });
+
+    menuTimeline
+      // Step 1: Menu slides in from right to left
+      .to(elements.offCanvasMenu, {
+        x: "0%",
+        duration: 0.8,
+        ease: "power3.inOut", // Cubic bezier feel
+      })
+      // Step 2: Items reveal with stagger
+      .to(
+        menuItems,
+        {
+          y: 0,
+          autoAlpha: 1,
+          duration: 0.5,
+          stagger: 0.1,
+          ease: "power2.out",
+        },
+        "-=0.4" // Overlap slightly with slide-in
+      );
+  };
 
   /**
    * Move menu to appropriate container based on screen size
@@ -166,17 +202,61 @@ function initOffCanvasMenu() {
       ? elements.offCanvasMenu
       : elements.headerNav;
 
+    // Move menu list
     if (!targetContainer.contains(elements.menu)) {
       targetContainer.appendChild(elements.menu);
     }
+    // Move CTA button
     if (!targetContainer.contains(elements.ctaMain)) {
       targetContainer.appendChild(elements.ctaMain);
+    }
+
+    // Re-create timeline whenever DOM structure changes (items move)
+    if (isMobile()) {
+      createMenuTimeline();
     }
   };
 
   const toggleMenu = (isOpen) => {
-    elements.offCanvasMenu.classList.toggle("active", isOpen);
-    elements.header.classList.toggle("menu-active", isOpen);
+    if (!menuTimeline) createMenuTimeline();
+
+    if (isOpen) {
+      elements.header.classList.add("menu-active");
+      menuTimeline.play();
+    } else {
+      // Create a reverse timeline for specific close requirement:
+      // "first items goes from y0 to y 20 and then menu goes revers"
+
+      const menuItems = elements.offCanvasMenu.querySelectorAll("li");
+      const closeTimeline = gsap.timeline({
+        onComplete: () => {
+          elements.header.classList.remove("menu-active");
+          // Reset timeline to start
+          menuTimeline.pause(0);
+        },
+      });
+
+      closeTimeline
+        .to(menuItems, {
+          y: 20,
+          autoAlpha: 0,
+          duration: 0.3,
+          stagger: {
+            each: 0.05,
+            from: "start", // or "end" if you want bottom-up, user implied simple reverse but "first items" usually means top-down
+          },
+          ease: "power2.in",
+        })
+        .to(
+          elements.offCanvasMenu,
+          {
+            x: "100%", // Slide back out to right
+            duration: 0.6,
+            ease: "power3.inOut",
+          },
+          "-=0.1"
+        );
+    }
   };
 
   // Event listeners
@@ -184,7 +264,7 @@ function initOffCanvasMenu() {
     "resize",
     debounce(repositionMenu, CONFIG.DEBOUNCE_DELAY)
   );
-  repositionMenu();
+  repositionMenu(); // Run once on init
 
   elements.menuToggle.addEventListener("click", () => toggleMenu(true));
 
@@ -201,7 +281,14 @@ function initOffCanvasMenu() {
 
   // Close menu when clicking outside
   document.addEventListener("click", (event) => {
+    // Only verify clicks if menu is actually open (rough check via transform or class if we maintained one,
+    // but here we can check if timeline is active or progress > 0)
+
+    // Simplest check: is menu visually open?
+    const isMenuOpen = elements.header.classList.contains("menu-active");
+
     if (
+      isMenuOpen &&
       !elements.offCanvasMenu.contains(event.target) &&
       !elements.menuToggle.contains(event.target)
     ) {
