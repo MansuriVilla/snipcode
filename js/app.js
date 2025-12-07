@@ -42,8 +42,8 @@ function initSmoothScrolling() {
     lenis.raf(time * 1000);
   });
 
-  // Disable lag smoothing
-  gsap.ticker.lagSmoothing(0);
+  // Enable lag smoothing to prevent huge jumps (default behavior)
+  // gsap.ticker.lagSmoothing(0);
 
   return lenis;
 }
@@ -391,6 +391,35 @@ function initParticles() {
     },
     retina_detect: true,
   });
+
+  // Optimize: Pause particles when off-screen
+  const homeSection = document.getElementById("Home");
+  if (homeSection && window.pJSDom) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          // Find the pJS instance for this container
+          const pJSInstance = window.pJSDom.find((p) =>
+            p.pJS.canvas.el.closest("#Home")
+          );
+
+          if (!pJSInstance) return;
+
+          if (entry.isIntersecting) {
+            if (!pJSInstance.pJS.particles.move.enable) {
+              pJSInstance.pJS.particles.move.enable = true;
+              pJSInstance.pJS.fn.vendors.draw();
+            }
+          } else {
+            pJSInstance.pJS.particles.move.enable = false;
+          }
+        });
+      },
+      { threshold: 0 }
+    ); // Trigger as soon as it leaves/enters
+
+    observer.observe(homeSection);
+  }
 }
 
 // ================================================================
@@ -662,16 +691,6 @@ function initVelocitySlider() {
       calculateDimensions();
     }
 
-    /**
-     * Animate slider
-     */
-    const animate = () => {
-      position = (position + (0.5 + velocity) * direction) % totalWidth;
-      slider.style.transform = `translateX(${-position}px)`;
-      velocity *= 0.95; // Deceleration
-      requestAnimationFrame(animate);
-    };
-
     // Wheel event for velocity control
     const handleWheel = throttle((event) => {
       direction = event.deltaY > 0 ? -1 : 1;
@@ -688,7 +707,40 @@ function initVelocitySlider() {
       }, CONFIG.DEBOUNCE_DELAY)
     );
 
+    // Optimize: Pause animation when off-screen
+    let isVisible = true;
+    let rafId = null;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible) {
+          if (!rafId) animate();
+        } else {
+          if (rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+          }
+        }
+      });
+    });
+
+    observer.observe(slider);
+
     slider.style.willChange = "transform";
+
+    /**
+     * Animate slider
+     */
+    const animate = () => {
+      if (!isVisible) return;
+
+      position = (position + (0.5 + velocity) * direction) % totalWidth;
+      slider.style.transform = `translateX(${-position}px)`;
+      velocity *= 0.95; // Deceleration
+      rafId = requestAnimationFrame(animate);
+    };
+
     animate();
   });
 }
@@ -853,6 +905,9 @@ function initProjectListAnimation() {
 
   // Initial state for reveal
   gsap.set(reveal, { xPercent: -50, yPercent: -50 });
+
+  // Hint browser for performance
+  reveal.style.willChange = "transform, opacity";
 
   // Optimize mouse movement with quickTo (GSAP 3.10+)
   // Fallback to simple tween if quickTo is not available (older GSAP versions)
