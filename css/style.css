@@ -279,6 +279,7 @@ span.has-splitting-line { display: inline-block; }
   overflow: hidden;
   border-radius: 10px;
   visibility: hidden; /* Start hidden */
+  will-change: transform, opacity;
 }
 
 .project-hover-reveal__inner {

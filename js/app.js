@@ -767,16 +767,32 @@ function initProjectListAnimation() {
   // Initial state for reveal
   gsap.set(reveal, { xPercent: -50, yPercent: -50 });
 
+  // Optimize mouse movement with quickTo (GSAP 3.10+)
+  // Fallback to simple tween if quickTo is not available (older GSAP versions)
+  let xTo, yTo;
+
+  if (gsap.quickTo) {
+    xTo = gsap.quickTo(reveal, "x", { duration: 0.5, ease: "power2.out" });
+    yTo = gsap.quickTo(reveal, "y", { duration: 0.5, ease: "power2.out" });
+  }
+
   // Mouse movement for the reveal container
   const moveReveal = (e) => {
-    // Determine the position relative to the viewport
-    // Using simple clientX/Y is fast and usually correct for fixed elements
-    gsap.to(reveal, {
-      x: e.clientX,
-      y: e.clientY,
-      duration: 0.5,
-      ease: "power2.out",
-    });
+    // If reduced motion is preferred, do not follow mouse
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    if (xTo && yTo) {
+      xTo(e.clientX);
+      yTo(e.clientY);
+    } else {
+      gsap.to(reveal, {
+        x: e.clientX,
+        y: e.clientY,
+        duration: 0.5,
+        ease: "power2.out",
+        overwrite: "auto",
+      });
+    }
   };
 
   projectList.addEventListener("mousemove", moveReveal);
@@ -797,6 +813,7 @@ function initProjectListAnimation() {
         scale: 1,
         duration: 0.3,
         ease: "power2.out",
+        overwrite: "auto",
       });
 
       // Animate image inside (scale down effect)
