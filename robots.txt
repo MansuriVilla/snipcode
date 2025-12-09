@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://www.adnanmansuri.pages.dev/sitemap.xml
+
+Sitemap: https://adnanmansuri.pages.dev/sitemap.xml
