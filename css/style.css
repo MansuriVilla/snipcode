@@ -42,7 +42,7 @@
 .cta span img { margin-left: 15px; }
 /* Header css end */
 .site_top--area .site_top--area_inner { display: flex; gap: clamp(25px, 3.8vw, 60px); justify-content: center; align-items: center; flex-direction: column; min-height: 100svh; }
-.site_top--area .site_top--area_inner p { max-width: clamp(440px,50vw,791px); text-align: center; width: 100%; }
+.site_top--area .site_top--area_inner p { max-width: clamp(440px,50vw,791px); padding: 0 50px; text-align: center; width: 100%; }
 /* Global CTA Button Styles */
 .site_cta--outline .site_cta--outline__a { 
   position: relative; 
