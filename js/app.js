@@ -996,8 +996,109 @@ function initProjectListAnimation() {
 }
 
 /**
+ * Initialize FAQ GSAP Animations
+ */
+function initFAQAnimation() {
+  const faqItems = document.querySelectorAll(".faq-item");
+  if (!faqItems.length) return;
+
+  // 1. Staggered Entrance Animation
+  if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+    // Ensure visibility reset first in case of reload mid-page
+    gsap.set(faqItems, { autoAlpha: 1 });
+
+    gsap.from(faqItems, {
+      scrollTrigger: {
+        trigger: ".faq-container",
+        start: "top 85%", // Trigger a bit earlier
+        toggleActions: "play none none reverse",
+      },
+      y: 50,
+      autoAlpha: 0, // handles opacity + visibility
+      duration: 0.8,
+      stagger: 0.15,
+      ease: "power3.out",
+      clearProps: "transform", // Clean up after animation to avoid z-index/stacking issues
+    });
+  } else {
+    // Fallback if GSAP fails
+    faqItems.forEach((item) => (item.style.opacity = 1));
+  }
+
+  // 2. Accordion Logic
+  faqItems.forEach((item) => {
+    const question = item.querySelector(".faq-question");
+    const answer = item.querySelector(".faq-answer");
+
+    question.addEventListener("click", () => {
+      const isActive = item.classList.contains("active");
+
+      // Close all others
+      faqItems.forEach((otherItem) => {
+        if (otherItem !== item && otherItem.classList.contains("active")) {
+          otherItem.classList.remove("active");
+          otherItem.querySelector(".faq-question").classList.remove("active");
+          gsap.to(otherItem.querySelector(".faq-answer"), {
+            height: 0,
+            duration: 0.4,
+            ease: "power2.inOut",
+          });
+          gsap.to(otherItem.querySelector(".faq-answer p"), {
+            opacity: 0,
+            y: 10,
+            duration: 0.2,
+          });
+        }
+      });
+
+      // Toggle current
+      if (!isActive) {
+        item.classList.add("active");
+        question.classList.add("active");
+
+        // Animate height to auto
+        gsap.set(answer, { height: "auto" });
+        const height = answer.offsetHeight;
+        gsap.set(answer, { height: 0 });
+
+        gsap.to(answer, {
+          height: height,
+          duration: 0.4,
+          ease: "power2.out",
+        });
+
+        // Animate content fade in
+        gsap.to(answer.querySelector("p"), {
+          opacity: 1,
+          y: 0,
+          duration: 0.4,
+          delay: 0.1,
+        });
+      } else {
+        item.classList.remove("active");
+        question.classList.remove("active");
+
+        gsap.to(answer, {
+          height: 0,
+          duration: 0.4,
+          ease: "power2.inOut",
+        });
+        gsap.to(answer.querySelector("p"), {
+          opacity: 0,
+          y: 10,
+          duration: 0.2,
+        });
+      }
+    });
+  });
+}
+
+/**
  * Mark body as loaded after window.onload
  */
 window.onload = () => {
   document.body.classList.add("loaded");
+
+  // Initialize FAQ Animation here to ensure DOM is ready
+  initFAQAnimation();
 };
