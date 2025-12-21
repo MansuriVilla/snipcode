@@ -802,6 +802,19 @@ function initGSAPAnimations() {
     });
   });
 
+  // Minimalist Hero Entrance
+  const heroTL = gsap.timeline({ defaults: { ease: "expo.out" } });
+
+  heroTL
+    .from(".hero-title", { y: 40, opacity: 0, duration: 1.5 })
+    .from(".hero-subtitle", { y: 20, opacity: 0, duration: 1.2 }, "-=1")
+    .from(
+      ".hero-cta-group > div",
+      { y: 15, opacity: 0, duration: 1, stagger: 0.1 },
+      "-=0.8"
+    )
+    .from(".hero-trust-bar", { opacity: 0, duration: 1.5 }, "-=0.5");
+
   if (!isTabletOrSmaller()) {
     // Projects section scale animation
     const projectsSection = document.getElementById("projects");
