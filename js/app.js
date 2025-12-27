@@ -1022,7 +1022,7 @@ function initFAQAnimation() {
 
     gsap.from(faqItems, {
       scrollTrigger: {
-        trigger: ".faq-container",
+        trigger: ".faq_main--container",
         start: "top 85%", // Trigger a bit earlier
         toggleActions: "play none none reverse",
       },
